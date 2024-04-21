@@ -1,0 +1,15 @@
+name = "tictactoe"
+description = "Tic Tac Toe game implemented in ADA and SDL2"
+version = "0.1.0-dev"
+
+authors = ["Stefano Anelli"]
+maintainers = ["Stefano Anelli <stefano.anelli@gmail.com>"]
+maintainers-logins = ["sanelli"]
+licenses = "MIT"
+website = "https://github.com/sanelli/tic-tac-toe"
+tags = ["ada", "tic-tac-toe", "game", "sdl", "sdl2"]
+
+executables = ["tictactoe"]
+
+[[depends-on]]
+sdlada = "^2.5.20"
