@@ -1,13 +1,12 @@
-with SDL;
-with SDL.Video.Windows;
-with SDL.Video.Windows.Makers;
+with Application; use Application;
+with Ada.Command_Line;
 
 procedure TicTacToe
 is
-   Window : SDL.Video.Windows.Window;
+   App : TApplication;
 begin
-   if not SDL.Initialise then
-      null;
+   Create (App);
+   if not Run (App) then
+      Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
    end if;
-   SDL.Video.Windows.Makers.Create (Window, "Tic Tac Toe", 10, 10, 300, 300);
 end TicTacToe;
