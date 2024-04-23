@@ -3,10 +3,14 @@ with Ada.Command_Line;
 
 procedure TicTacToe
 is
-   App : TApplication;
+   App      : TApplication;
+   Success  : Boolean;
 begin
-   Create (App);
-   if not Run (App) then
+   Success := Create (App) and then Run(App);
+
+   if Success then
       Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
    end if;
+
+   Finalise (App);
 end TicTacToe;

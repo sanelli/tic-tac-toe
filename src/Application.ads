@@ -10,7 +10,8 @@ package Application is
       Window   : SDL.Video.Windows.Window;
    end record;
 
-   procedure Create (application : in out TApplication);
+   function Create (application : in out TApplication) return Boolean;
    function Run (application : in out TApplication) return Boolean;
+   procedure Finalise (application : in out TApplication);
 
 end Application;
