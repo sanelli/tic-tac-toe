@@ -26,9 +26,9 @@ package body Application is
       Running : Boolean;
       Event   : SDL.Events.Events.Events;
    begin
-      Running := true;
+      Running := True;
       while Running loop
-         if SDL.Events.Events.Poll(Event) then 
+         if SDL.Events.Events.Poll (Event) then 
             case Event.Common.Event_Type is
                   when SDL.Events.Quit =>
                      Put_Line ("Terminating...");
@@ -37,7 +37,7 @@ package body Application is
             end case;
          end if;
       end loop;
-      
+
       return True;
    end Run;
 
