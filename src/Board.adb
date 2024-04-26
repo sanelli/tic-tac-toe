@@ -1,5 +1,15 @@
 package body Board is
 
+   procedure Create (board : in out TBoard)
+   is
+   begin
+      for Row in TBoardRange loop
+         for Column in TBoardRange loop
+            board (Row, Column) := Empty;
+         end loop;
+      end loop;
+   end Create;
+
    function BoardCompleted (board : TBoard) return Boolean
    is
    begin

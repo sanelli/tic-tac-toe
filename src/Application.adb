@@ -10,6 +10,8 @@ package body Application is
    function Create (application : in out TApplication) return Boolean
    is
    begin
+      Create(application.Board);
+
       if not SDL.Initialise then
          Put_Line ("Cannot initialize SDL.");
          return False;
