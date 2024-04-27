@@ -16,6 +16,7 @@ package Rendering is
       CircleTexture     : SDL.Video.Textures.Texture;
       EmptyTexture      : SDL.Video.Textures.Texture;
       MessageFont       : SDL.TTFs.Fonts;
+      TileFont          : SDL.TTFs.Fonts;
       Status            : TTRenderingStatus;
    end record;
 

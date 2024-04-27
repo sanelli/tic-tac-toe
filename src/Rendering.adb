@@ -1,6 +1,7 @@
 with SDL;                 use SDL;
 with SDL.Video.Surfaces;
 with SDL.Video.Rectangles;
+with SDL.Video.Palettes;
 with SDL.Video.Renderers; use SDL.Video.Renderers;
 with SDL.Video.Windows.Makers;
 with SDL.Video.Textures.Makers;
@@ -20,6 +21,8 @@ package body Rendering is
       TileSize           : SDL.Sizes;
       ExternalRectangle  : SDL.Video.Rectangles.Rectangle;
       InternalRectangle  : SDL.Video.Rectangles.Rectangle;
+      TextSurface        : SDL.Video.Surfaces.Surface;
+      TextRect           : SDL.Video.Rectangles.Rectangle;
    begin
       rendering.Status := Playing;
 
@@ -55,11 +58,12 @@ package body Rendering is
       --  Load font
       SDL.TTFs.Makers.Create
         (rendering.MessageFont, "BebasNeue-Regular.ttf", 26);
+      SDL.TTFs.Makers.Create (rendering.TileFont, "BebasNeue-Regular.ttf", 52);
 
       --  Create empty texture
       SDL.Video.Surfaces.Makers.Create (TmpSurface, TileSize, 32, 0, 0, 0, 0);
       SDL.Video.Renderers.Makers.Create (TmpSurfaceRenderer, TmpSurface);
-      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Green);
+      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Blue);
       TmpSurfaceRenderer.Fill (ExternalRectangle);
       TmpSurfaceRenderer.Set_Draw_Colour (Colours.Black);
       TmpSurfaceRenderer.Fill (InternalRectangle);
@@ -69,28 +73,50 @@ package body Rendering is
       TmpSurface.Finalize;
 
       --  Create cross texture
-      --  TODO: Actually draw a cross
       SDL.Video.Surfaces.Makers.Create (TmpSurface, TileSize, 32, 0, 0, 0, 0);
       SDL.Video.Renderers.Makers.Create (TmpSurfaceRenderer, TmpSurface);
-      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Green);
+      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Blue);
       TmpSurfaceRenderer.Fill (ExternalRectangle);
-      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Red);
+      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Black);
       TmpSurfaceRenderer.Fill (InternalRectangle);
+      TextSurface     :=
+        SDL.TTFs.Render_Solid (rendering.TileFont, "X", Colours.Red);
+      TextRect.X      :=
+        SDL.Coordinate
+          ((100 - Integer (TextSurface.Clip_Rectangle.Width)) / 2);
+      TextRect.Y      :=
+        SDL.Coordinate
+          ((100 - Integer (TextSurface.Clip_Rectangle.Height)) / 2);
+      TextRect.Width  := TextSurface.Clip_Rectangle.Width;
+      TextRect.Height := TextSurface.Clip_Rectangle.Height;
+      TmpSurface.Blit (TextRect, TextSurface, ExternalRectangle);
       SDL.Video.Textures.Makers.Create
         (rendering.CrossTexture, rendering.Renderer, TmpSurface);
+      TextSurface.Finalize;
       TmpSurfaceRenderer.Finalize;
       TmpSurface.Finalize;
 
       --  Create circle texture
-      --  TODO: Actually draw a circle
       SDL.Video.Surfaces.Makers.Create (TmpSurface, TileSize, 32, 0, 0, 0, 0);
       SDL.Video.Renderers.Makers.Create (TmpSurfaceRenderer, TmpSurface);
-      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Green);
-      TmpSurfaceRenderer.Fill (ExternalRectangle);
       TmpSurfaceRenderer.Set_Draw_Colour (Colours.Blue);
+      TmpSurfaceRenderer.Fill (ExternalRectangle);
+      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Black);
       TmpSurfaceRenderer.Fill (InternalRectangle);
+      TextSurface     :=
+        SDL.TTFs.Render_Solid (rendering.TileFont, "O", Colours.Green);
+      TextRect.X      :=
+        SDL.Coordinate
+          ((100 - Integer (TextSurface.Clip_Rectangle.Width)) / 2);
+      TextRect.Y      :=
+        SDL.Coordinate
+          ((100 - Integer (TextSurface.Clip_Rectangle.Height)) / 2);
+      TextRect.Width  := TextSurface.Clip_Rectangle.Width;
+      TextRect.Height := TextSurface.Clip_Rectangle.Height;
+      TmpSurface.Blit (TextRect, TextSurface, ExternalRectangle);
       SDL.Video.Textures.Makers.Create
         (rendering.CircleTexture, rendering.Renderer, TmpSurface);
+      TextSurface.Finalize;
       TmpSurfaceRenderer.Finalize;
       TmpSurface.Finalize;
 
@@ -100,6 +126,7 @@ package body Rendering is
    procedure Finalise (rendering : in out TRendering) is
    begin
       rendering.MessageFont.Finalize;
+      rendering.TileFont.Finalize;
       rendering.EmptyTexture.Finalize;
       rendering.CircleTexture.Finalize;
       rendering.CrossTexture.Finalize;
@@ -161,6 +188,18 @@ package body Rendering is
          end case;
       end WinningMessage;
 
+      function WinningColour return SDL.Video.Palettes.Colour is
+      begin
+         case winner is
+            when Cross =>
+               return Colours.Red;
+            when Circle =>
+               return Colours.Green;
+            when Empty =>
+               return Colours.White;
+         end case;
+      end WinningColour;
+
       TextSurface       : SDL.Video.Surfaces.Surface;
       TextRect          : SDL.Video.Rectangles.Rectangle;
       WinMessageTexture : SDL.Video.Textures.Texture;
@@ -176,7 +215,7 @@ package body Rendering is
 
          TextSurface :=
            SDL.TTFs.Render_Solid
-             (rendering.MessageFont, WinningMessage, Colours.White);
+             (rendering.MessageFont, WinningMessage, WinningColour);
 
          TextRect.X      :=
            SDL.Coordinate
