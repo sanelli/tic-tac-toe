@@ -109,7 +109,6 @@ package body Rendering is
       SDL.Finalise;
    end Finalise;
 
-   --  TODO: Only render if something changed
    procedure RenderBoard (rendering : in out TRendering; board : TBoard) is
       procedure RenderBoardCell (row, column : TBoardRange) with
         Inline => True

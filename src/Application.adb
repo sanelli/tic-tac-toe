@@ -13,6 +13,7 @@ package body Application is
       application.CurrentPlayer := Cross;
       application.HaveWinner := False;
       application.Winner := Empty;
+      application.HasChanges := True;
       Create (application.Board);
       return Create (application.Rendering);
    end Create;
@@ -35,6 +36,9 @@ package body Application is
    begin
       running := True;
       if SDL.Events.Events.Poll (Event) then
+
+         application.HasChanges := False;
+
          case Event.Common.Event_Type is
 
                --  Quit!
@@ -52,6 +56,7 @@ package body Application is
                         application.Winner := Empty;
                         application.HaveWinner := False;
                         application.CurrentPlayer := Cross;
+                        application.HasChanges := True;
                      when others => null;
                   end case;
 
@@ -98,6 +103,7 @@ package body Application is
                               Put_Line ("Game over with no winner!");
                         end if;
 
+                        application.HasChanges := True;
                      end if;
                   end if;
                when others => null;
@@ -110,16 +116,20 @@ package body Application is
       Running     : Boolean;
    begin
       Running := True;
+      RenderBoard (application.Rendering, application.Board);
+
       while Running loop
          ProcessEvent (application, Running);
 
-         if application.HaveWinner then
-            RenderWinner (
-               application.Rendering,
-               application.Board,
-               application.Winner);
-         else
-            RenderBoard (application.Rendering, application.Board);
+         if application.HasChanges then
+            if application.HaveWinner then
+               RenderWinner (
+                  application.Rendering,
+                  application.Board,
+                  application.Winner);
+            else
+               RenderBoard (application.Rendering, application.Board);
+            end if;
          end if;
 
       end loop;
