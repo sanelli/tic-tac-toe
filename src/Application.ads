@@ -3,10 +3,11 @@ with Rendering; use Rendering;
 
 package Application is
    type TApplication is record
-      Board        : TBoard;
-      Rendering    : TRendering;
-      HaveWinner   : Boolean;
-      Winner       : TBoardContent;
+      Board         : TBoard;
+      Rendering     : TRendering;
+      HaveWinner    : Boolean;
+      Winner        : TBoardContent;
+      CurrentPlayer : TBoardContent;
    end record;
 
    function Create (application : in out TApplication) return Boolean;

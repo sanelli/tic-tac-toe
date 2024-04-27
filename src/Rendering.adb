@@ -140,4 +140,13 @@ package body Rendering is
       null;
    end RenderWinner;
 
+   procedure MouseCoordinateToBoard (
+      x, y : SDL.Natural_Coordinate;
+      row, column : out TBoardRange)
+   is
+   begin
+      row := TBoardRange (Natural (y) / 100 + 1);
+      column := TBoardRange (Natural (x) / 100 + 1);
+   end MouseCoordinateToBoard;
+
 end Rendering;

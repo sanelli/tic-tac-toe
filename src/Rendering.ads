@@ -23,4 +23,8 @@ package Rendering is
       rendering : in out TRendering;
       winner : TBoardContent);
 
+   procedure MouseCoordinateToBoard (
+      x, y : SDL.Natural_Coordinate;
+      row, column : out TBoardRange);
+
 end Rendering;
