@@ -1,6 +1,4 @@
 with SDL;
-with SDL.Events;
-with SDL.Events.Events;
 with SDL.Video.Surfaces;
 with SDL.Video.Windows.Makers;
 with SDL.Video.Textures.Makers;
@@ -30,7 +28,7 @@ package body Rendering is
 
       --  Create empty texture
       SDL.Video.Surfaces.Makers.Create (TmpSurface, Sizes, 32, 0, 0, 0, 0);
-      
+
       SDL.Video.Textures.Makers.Create (
          rendering.EmptyTexture,
          rendering.Renderer,
@@ -65,22 +63,20 @@ package body Rendering is
       SDL.Finalise;
    end Finalise;
 
-   -- TODO: MOVE THE PROCESSING EVENT OUTISIDE THE RENDERE
-   -- RENDERR SHOUDLD ONLY EXPOSE TWO METHODS: RenderBoard and RenderWinner
-   procedure ProcessEvent
-      (rendering : in out TRendering; running : out Boolean)
+   procedure RenderBoard (
+      rendering : in out TRendering;
+      board : in out TBoard)
    is
-      Event   : SDL.Events.Events.Events;
    begin
-      running := True;
-      if SDL.Events.Events.Poll (Event) then
-         case Event.Common.Event_Type is
-               when SDL.Events.Quit =>
-                  Put_Line ("Terminating...");
-                  running := False;
-               when others => null;
-         end case;
-      end if;
-   end ProcessEvent;
+      null;
+   end RenderBoard;
+
+   procedure RenderWinner (
+      rendering : in out TRendering;
+      winner : TBoardContent)
+   is
+   begin
+      null;
+   end RenderWinner;
 
 end Rendering;

@@ -2,6 +2,8 @@ with SDL.Video.Windows;
 with SDL.Video.Textures;
 with SDL.Video.Renderers;
 
+with Board; use Board;
+
 package Rendering is
 
    type TRendering is record
@@ -13,8 +15,12 @@ package Rendering is
    end record;
 
    function Create (rendering : in out TRendering) return Boolean;
-   procedure ProcessEvent
-      (rendering : in out TRendering; running : out Boolean);
    procedure Finalise (rendering : in out TRendering);
+   procedure RenderBoard (
+      rendering : in out TRendering;
+      board : in out TBoard);
+   procedure RenderWinner (
+      rendering : in out TRendering;
+      winner : TBoardContent);
 
 end Rendering;

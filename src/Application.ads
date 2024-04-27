@@ -5,6 +5,8 @@ package Application is
    type TApplication is record
       Board        : TBoard;
       Rendering    : TRendering;
+      HaveWinner   : Boolean;
+      Winner       : TBoardContent;
    end record;
 
    function Create (application : in out TApplication) return Boolean;
