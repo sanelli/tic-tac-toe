@@ -1,3 +1,5 @@
+with Ada.Text_IO; use Ada.Text_IO;
+
 package body Board is
 
    procedure Create (board : in out TBoard)
@@ -29,22 +31,22 @@ package body Board is
       return Boolean
    is
 
-      function InspetLine (
-         line : TBoardRange;
+      function InspectRow (
+         row : TBoardRange;
          winner : out TBoardContent)
          return Boolean
       is
       begin
          winner := Empty;
-         if board (line, 1) = board (line, 2) and then
-            board (line, 1) = board (line, 3) and then
-            board (line, 1) /= Empty
+         if board (row, 1) = board (row, 2) and then
+            board (row, 1) = board (row, 3) and then
+            board (row, 1) /= Empty
          then
-            winner := board (line, 1);
+            winner := board (row, 1);
             return True;
          end if;
          return False;
-      end InspetLine;
+      end InspectRow;
 
       function InspetColumn (
          column : TBoardRange;
@@ -67,7 +69,7 @@ package body Board is
       is
       begin
          winner := Empty;
-         if board (1, 1) = board (2, 2) and then
+         if board (2, 2) = board (1, 1) and then
             board (2, 2) = board (3, 3) and then
             board (2, 2) /= Empty
          then
@@ -75,7 +77,7 @@ package body Board is
             return True;
          end if;
 
-         if board (1, 3) = board (2, 2) and then
+         if board (2, 2) = board (3, 1) and then
             board (2, 2) = board (1, 3) and then
             board (2, 2) /= Empty
          then
@@ -89,13 +91,14 @@ package body Board is
       Result : Boolean;
    begin
 
-      Result := InspetLine (1, winner) or else
-               InspetLine (2, winner) or else
-               InspetLine (3, winner) or else
-               InspetColumn (1, winner) or else
-               InspetColumn (2, winner) or else
-               InspetColumn (3, winner) or else
-               InspetDiagonal (winner);
+      Result :=
+         InspectRow (1, winner) or else
+         InspectRow (2, winner) or else
+         InspectRow (3, winner) or else
+         InspetColumn (1, winner) or else
+         InspetColumn (2, winner) or else
+         InspetColumn (3, winner) or else
+         InspetDiagonal (winner);
       return Result;
 
    end SomebodyWon;
