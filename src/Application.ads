@@ -1,10 +1,10 @@
-with SDL.Video.Windows;
 with Board; use Board;
+with Rendering; use Rendering;
 
 package Application is
    type TApplication is record
-      Board    : TBoard;
-      Window   : SDL.Video.Windows.Window;
+      Board        : TBoard;
+      Rendering    : TRendering;
    end record;
 
    function Create (application : in out TApplication) return Boolean;
