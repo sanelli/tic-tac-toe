@@ -1,12 +1,14 @@
 with SDL; use SDL;
 with SDL.Video.Surfaces;
 with SDL.Video.Rectangles;
-with SDL.Video.Palettes;
+with SDL.Video.Renderers; use SDL.Video.Renderers;
 with SDL.Video.Windows.Makers;
 with SDL.Video.Textures.Makers;
 with SDL.Video.Renderers.Makers;
 with SDL.Video.Surfaces.Makers;
 with Ada.Text_IO; use Ada.Text_IO;
+with Colours;
+with RectMaker;
 
 package body Rendering is
 
@@ -16,8 +18,6 @@ package body Rendering is
       Sizes              : SDL.Sizes;
       ExternalRectangle  : SDL.Video.Rectangles.Rectangle;
       InternalRectangle  : SDL.Video.Rectangles.Rectangle;
-      GreenColour        : SDL.Video.Palettes.Colour;
-      BlackColour        : SDL.Video.Palettes.Colour;
    begin
       if not SDL.Initialise then
          Put_Line ("Cannot initialize SDL.");
@@ -30,30 +30,25 @@ package body Rendering is
         (rendering.Window, "Tic Tac Toe", 10, 10, 300, 300);
       Put_Line ("Window created.");
 
-      SDL.Video.Renderers.Makers.Create (rendering.Renderer, rendering.Window);
+      SDL.Video.Renderers.Makers.Create (
+         rendering.Renderer, rendering.Window,
+            SDL.Video.Renderers.Accelerated or
+            SDL.Video.Renderers.Present_V_Sync);
       Put_Line ("Renderer created.");
 
       --  Common settings
-      GreenColour.Alpha        := 255;
-      GreenColour.Green        := 255;
-      BlackColour.Alpha        := 255;
       Sizes.Height             := 100;
       Sizes.Width              := 100;
-      ExternalRectangle.X      := 0;
-      ExternalRectangle.Y      := 0;
-      ExternalRectangle.Width  := Sizes.Width;
-      ExternalRectangle.Height := Sizes.Height;
-      InternalRectangle.X      := 3;
-      InternalRectangle.Y      := 3;
-      InternalRectangle.Width  := 94;
-      InternalRectangle.Height := 94;
+      ExternalRectangle        :=
+         RectMaker.MakeRect (0, 0, Sizes.Width, Sizes.Height);
+      InternalRectangle        := RectMaker.MakeRect (3, 3, 96, 96);
 
       --  Create empty texture
       SDL.Video.Surfaces.Makers.Create (TmpSurface, Sizes, 32, 0, 0, 0, 0);
       SDL.Video.Renderers.Makers.Create (TmpSurfaceRenderer, TmpSurface);
-      TmpSurfaceRenderer.Set_Draw_Colour (GreenColour);
+      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Green);
       TmpSurfaceRenderer.Fill (ExternalRectangle);
-      TmpSurfaceRenderer.Set_Draw_Colour (BlackColour);
+      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Black);
       TmpSurfaceRenderer.Fill (InternalRectangle);
       SDL.Video.Textures.Makers.Create
         (rendering.EmptyTexture, rendering.Renderer, TmpSurface);
@@ -61,15 +56,29 @@ package body Rendering is
       TmpSurface.Finalize;
 
       --  Create cross texture
+      --  TODO: Actually draw a cross
       SDL.Video.Surfaces.Makers.Create (TmpSurface, Sizes, 32, 0, 0, 0, 0);
+      SDL.Video.Renderers.Makers.Create (TmpSurfaceRenderer, TmpSurface);
+      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Green);
+      TmpSurfaceRenderer.Fill (ExternalRectangle);
+      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Red);
+      TmpSurfaceRenderer.Fill (InternalRectangle);
       SDL.Video.Textures.Makers.Create
         (rendering.CrossTexture, rendering.Renderer, TmpSurface);
+      TmpSurfaceRenderer.Finalize;
       TmpSurface.Finalize;
 
       --  Create circle texture
+      --  TODO: Actually draw a circle
       SDL.Video.Surfaces.Makers.Create (TmpSurface, Sizes, 32, 0, 0, 0, 0);
+      SDL.Video.Renderers.Makers.Create (TmpSurfaceRenderer, TmpSurface);
+      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Green);
+      TmpSurfaceRenderer.Fill (ExternalRectangle);
+      TmpSurfaceRenderer.Set_Draw_Colour (Colours.Blue);
+      TmpSurfaceRenderer.Fill (InternalRectangle);
       SDL.Video.Textures.Makers.Create
         (rendering.CircleTexture, rendering.Renderer, TmpSurface);
+      TmpSurfaceRenderer.Finalize;
       TmpSurface.Finalize;
 
       return True;
@@ -91,10 +100,11 @@ package body Rendering is
       is
          TargetRect : SDL.Video.Rectangles.Rectangle;
       begin
-         TargetRect.X := SDL.Coordinate ((column - 1) * 100);
-         TargetRect.Y := SDL.Coordinate ((row - 1) * 100);
-         TargetRect.Width := 100;
-         TargetRect.Height := 100;
+         TargetRect := RectMaker.MakeRect (
+            SDL.Coordinate ((column - 1) * 100),
+            SDL.Coordinate ((row - 1) * 100),
+            100,
+            100);
 
          case board (row, column) is
             when Empty =>
@@ -109,19 +119,13 @@ package body Rendering is
          end case;
       end RenderBoardCell;
 
-      BlackColour : SDL.Video.Palettes.Colour;
    begin
-      BlackColour.Alpha := 255;
-      BlackColour.Red := 0;
-      BlackColour.Green := 0;
-      BlackColour.Blue := 0;
-      rendering.Renderer.Set_Draw_Colour (BlackColour);
+      rendering.Renderer.Set_Draw_Colour (Colours.Black);
       rendering.Renderer.Clear;
 
       for Row in TBoardRange loop
          for Column in TBoardRange loop
             RenderBoardCell (Row, Column);
-            null;
          end loop;
       end loop;
 

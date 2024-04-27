@@ -15,7 +15,7 @@ package body Application is
    end Create;
 
    procedure ProcessEvent
-      (rendering : in out TApplication; running : out Boolean)
+      (application : in out TApplication; running : out Boolean)
    is
       Event   : SDL.Events.Events.Events;
    begin

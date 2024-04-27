@@ -100,4 +100,20 @@ package body Board is
 
    end SomebodyWon;
 
+   function SetValue (
+      board : in out TBoard;
+      row, column : TBoardRange;
+      item : TBoardContent)
+      return Boolean
+   is
+   begin
+      --  Prevent overring existing value;
+      if board (row, column) /= Empty then
+         return False;
+      end if;
+
+      board (row, column) := item;
+      return True;
+   end SetValue;
+
 end Board;
