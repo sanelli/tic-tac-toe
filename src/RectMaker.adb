@@ -14,4 +14,14 @@ package body RectMaker is
       return rect;
    end MakeRect;
 
+   function MakeSize
+      (width, height : SDL.Dimension)
+      return SDL.Sizes
+   is
+      size : SDL.Sizes;
+   begin
+      size.Width := width;
+      size.Height := height;
+      return size;
+   end MakeSize;
 end RectMaker;

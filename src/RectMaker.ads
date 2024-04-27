@@ -8,4 +8,8 @@ package RectMaker is
        width, height : SDL.Natural_Dimension)
       return SDL.Video.Rectangles.Rectangle;
 
+   function MakeSize
+      (width, height : SDL.Dimension)
+      return SDL.Sizes;
+
 end RectMaker;

@@ -1,5 +1,6 @@
 /obj/
-/bin/
+/bin/*
+!/bin/*.ttf
 /alire/
 /config/
 .DS_Store

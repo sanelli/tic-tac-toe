@@ -59,7 +59,7 @@ package body Application is
                when SDL.Events.Mice.Button_Up =>
 
                   if Event.Mouse_Button.Button = Left then
-                     Put_Line ("Mouse pressed!");
+
                      if not application.HaveWinner then
                         MouseCoordinateToBoard (
                            Event.Mouse_Button.X,
@@ -114,8 +114,10 @@ package body Application is
          ProcessEvent (application, Running);
 
          if application.HaveWinner then
-            RenderBoard (application.Rendering, application.Board);
-            RenderWinner (application.Rendering, application.Winner);
+            RenderWinner (
+               application.Rendering,
+               application.Board,
+               application.Winner);
          else
             RenderBoard (application.Rendering, application.Board);
          end if;
