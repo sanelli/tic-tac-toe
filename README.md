@@ -17,4 +17,4 @@ Tic Tac Toe implemented in Ada and SDL2
 
 # Screenshots
 
-<img width="1440" alt="image" src="https://github.com/sanelli/tic-tac-toe/assets/2866041/dcb91c1a-f703-476b-9c5d-5ce7c6d900f2">
+<img width="412" alt="image" src="https://github.com/sanelli/tic-tac-toe/assets/2866041/cd2b1153-d15b-4500-8834-063844aa0513">
