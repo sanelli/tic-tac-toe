@@ -1,5 +1,5 @@
-# tic-tac-toe
-Tic Tac Toe implemented in Ada and SDL2
+# Tic-tac-toe
+[Tic-tac-toe](https://en.wikipedia.org/wiki/Tic-tac-toe) implemented in Ada and SDL2.
 
 ## Building on OSX Sonoma with homebrew installed SDL2
 - `alr build`
