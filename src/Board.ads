@@ -1,6 +1,6 @@
 package Board is
 
-   type TBoardContent is (Empty, Cross, Square);
+   type TBoardContent is (Empty, Cross, Circle);
    type TBoardRange is range 1 .. 3;
    type TBoard is array (TBoardRange, TBoardRange) of TBoardContent;
 

@@ -18,7 +18,7 @@ package Rendering is
    procedure Finalise (rendering : in out TRendering);
    procedure RenderBoard (
       rendering : in out TRendering;
-      board : in out TBoard);
+      board : TBoard);
    procedure RenderWinner (
       rendering : in out TRendering;
       winner : TBoardContent);
