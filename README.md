@@ -14,3 +14,7 @@ Tic Tac Toe implemented in Ada and SDL2
 ## Bebas Neue Font
 - [Google Fonts](https://fonts.google.com/specimen/Bebas+Neue/about)
 - [Git Hub](https://github.com/dharmatype/Bebas-Neue)
+
+# Screenshots
+
+<img width="1440" alt="image" src="https://github.com/sanelli/tic-tac-toe/assets/2866041/dcb91c1a-f703-476b-9c5d-5ce7c6d900f2">
