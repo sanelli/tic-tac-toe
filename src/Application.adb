@@ -1,8 +1,8 @@
 with SDL;
 with SDL.Events;
 with SDL.Events.Events;
-with SDL.Events.Mice;
-with SDL.Timers;
+with SDL.Events.Mice; use SDL.Events.Mice;
+with SDL.Events.Keyboards;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Application is
@@ -36,49 +36,69 @@ package body Application is
       running := True;
       if SDL.Events.Events.Poll (Event) then
          case Event.Common.Event_Type is
+
+               --  Quit!
                when SDL.Events.Quit =>
                   Put_Line ("Terminating...");
                   running := False;
+
+               --  Handle keyboard
+               when SDL.Events.Keyboards.Key_Up =>
+
+                  case Event.Keyboard.Key_Sym.Key_Code is
+                     when SDL.Events.Keyboards.Code_N =>
+                        Put_Line ("New game started!");
+                        Create (application.Board);
+                        application.Winner := Empty;
+                        application.HaveWinner := False;
+                        application.CurrentPlayer := Cross;
+                     when others => null;
+                  end case;
+
+               --  Handle mouse
                when SDL.Events.Mice.Button_Up =>
-                  Put_Line ("Mouse pressed!");
-                  if not application.HaveWinner then
-                     MouseCoordinateToBoard (
-                        Event.Mouse_Button.X,
-                        Event.Mouse_Button.Y,
-                        Row, Column);
 
-                     --  Move to next player only if cell is empty!
-                     if SetValue (
-                        application.Board,
-                        Row, Column,
-                        application.CurrentPlayer)
-                     then
-                        application.CurrentPlayer :=
-                           NextPlayer (application.CurrentPlayer);
-                     end if;
+                  if Event.Mouse_Button.Button = Left then
+                     Put_Line ("Mouse pressed!");
+                     if not application.HaveWinner then
+                        MouseCoordinateToBoard (
+                           Event.Mouse_Button.X,
+                           Event.Mouse_Button.Y,
+                           Row, Column);
 
-                     --  Check if there is a winner
-                     application.HaveWinner :=
-                        SomebodyWon (application.Board, application.Winner);
-
-                     if application.HaveWinner then
-                        if application.Winner = Cross then
-                           Put ("X");
-                        else
-                           Put ("O");
+                        --  Move to next player only if cell is empty!
+                        if SetValue (
+                           application.Board,
+                           Row, Column,
+                           application.CurrentPlayer)
+                        then
+                           application.CurrentPlayer :=
+                              NextPlayer (application.CurrentPlayer);
                         end if;
-                        Put_Line (" is the winner!");
-                     end if;
 
-                     --  If no winner check if the board is completed
-                     if not application.HaveWinner
-                        and then BoardCompleted (application.Board)
-                     then
-                           application.Winner := Empty;
-                           application.HaveWinner := True;
-                           Put_Line ("Game over with no winner!");
-                     end if;
+                        --  Check if there is a winner
+                        application.HaveWinner :=
+                           SomebodyWon (application.Board, application.Winner);
 
+                        if application.HaveWinner then
+                           if application.Winner = Cross then
+                              Put ("X");
+                           else
+                              Put ("O");
+                           end if;
+                           Put_Line (" is the winner!");
+                        end if;
+
+                        --  If no winner check if the board is completed
+                        if not application.HaveWinner
+                           and then BoardCompleted (application.Board)
+                        then
+                              application.Winner := Empty;
+                              application.HaveWinner := True;
+                              Put_Line ("Game over with no winner!");
+                        end if;
+
+                     end if;
                   end if;
                when others => null;
          end case;
